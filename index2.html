@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom - Menstrual Wellness Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #FFF9F9;
+            --sidebar-color: #F9F5FF;
+            --text-dark: #4A4A4A;
+            --text-light: #8A7FAA;
+            --accent-pink: #FFD6E0;
+            --accent-peach: #FFE8D6;
+            --accent-teal: #C1EDE6;
+            --accent-lavender: #E8E0FF;
+            --graph-pink: #FFB8D1;
+            --graph-lavender: #B8B3FF;
+            --primary-purple: #6E5B9A;
+            --success-green: #A0D9B4;
+            --error-red: #FFA8A8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 240px;
+            background: linear-gradient(to bottom, var(--sidebar-color), white);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: fixed;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-family: 'Nunito', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-purple);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--graph-pink);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Nunito', sans-serif;
+            font-size: 16px;
+        }
+
+        .nav-item i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .nav-item:hover {
+            background-color: var(--accent-lavender);
+            color: var(--primary-purple);
+        }
+
+        .nav-item:hover i {
+            color: var(--primary-purple);
+        }
+
+        .nav-item.active {
+            background-color: var(--accent-pink);
+            color: var(--primary-purple);
+            font-weight: 600;
+        }
+
+        .nav-item.active i {
+            color: var(--primary-purple);
+        }
+
+        .profile {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            padding: 15px 10px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent-teal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+
+        .profile-name {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-left: 240px;
+            padding: 30px 40px;
+            width: calc(100% - 240px);
+        }
+
+        .greeting {
+            margin-bottom: 30px;
+        }
+
+        .greeting h1 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-purple);
+            margin-bottom: 5px;
+        }
+
+        .greeting p {
+            color: var(--text-light);
+            font-size: 16px;
+        }
+
+        .graph-container {
+            background-color: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+
+        .graph-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .graph-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .graph-encouragement {
+            display: flex;
+            align-items: center;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .graph-encouragement i {
+            margin-left: 8px;
+            color: var(--accent-teal);
+        }
+
+        .graph {
+            height: 200px;
+            position: relative;
+            margin-top: 30px;
+        }
+
+        .graph-line {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--graph-pink), var(--graph-lavender));
+            border-radius: 2px;
+        }
+
+        .graph-point {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(to right, var(--graph-pink), var(--graph-lavender);
+            border-radius: 50%;
+            bottom: 36px;
+            transform: translateX(-50%);
+            box-shadow: 0 0 0 4px rgba(255, 184, 209, 0.3);
+        }
+
+        .graph-point.active {
+            width: 20px;
+            height: 20px;
+            bottom: 34px;
+            box-shadow: 0 0 0 6px rgba(255, 184, 209, 0.3);
+        }
+
+        .graph-point::after {
+            content: attr(data-day);
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .graph-point.active::after {
+            font-weight: 600;
+            color: var(--primary-purple);
+        }
+
+        .graph-point::before {
+            content: attr(data-percent)'%';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            background-color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .graph-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding: 0 10px;
+        }
+
+        .graph-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* Symptoms Section */
+        .symptoms-container {
+            background-color: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .symptom-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .symptom-chip {
+            background-color: var(--accent-peach);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .symptom-chip:hover {
+            background-color: var(--accent-pink);
+        }
+
+        .symptom-chip.selected {
+            background-color: var(--accent-pink);
+            font-weight: 500;
+        }
+
+        .add-symptom {
+            background-color: transparent;
+            border: 1px dashed var(--text-light);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+        }
+
+        .add-symptom i {
+            margin-right: 5px;
+        }
+
+        .submit-btn {
+            background-color: var(--primary-purple);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .feedback-message {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+            font-size: 14px;
+        }
+
+        .success {
+            background-color: var(--success-green);
+            color: #1a5330;
+        }
+
+        .error {
+            background-color: var(--error-red);
+            color: #8b0000;
+        }
+
+        /* Cards Section */
+        .cards-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 20px;
+            flex: 1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .card-content {
+            margin-bottom: 20px;
+            color: var(--text-light);
+            font-size: 14px;
+            flex-grow: 1;
+        }
+
+        .card-button {
+            background-color: var(--accent-pink);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            color: var(--primary-purple);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+        }
+
+        .card-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-button.teal {
+            background-color: var(--accent-teal);
+            color: white;
+        }
+
+        /* Mood Section */
+        .mood-container {
+            background-color: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+
+        .mood-options {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .mood-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .mood-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .mood-option:hover .mood-icon {
+            transform: scale(1.2);
+        }
+
+        .mood-name {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .stars {
+            display: flex;
+            gap: 2px;
+        }
+
+        .star {
+            color: #DDD;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .star:hover, .star.active {
+            color: #FFD700;
+        }
+
+        .mood-feedback {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--accent-peach);
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .mood-submit-btn {
+            background-color: var(--primary-purple);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .mood-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .mood-submit-btn:disabled {
+            background-color: #DDD;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .mood-thank-you {
+            background-color: var(--success-green);
+            color: #1a5330;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        /* Spotify Section */
+        .spotify-container {
+            background-color: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+
+        .spotify-button {
+            background-color: #1DB954;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .spotify-button i {
+            margin-right: 8px;
+        }
+
+        .spotify-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .playlist-display {
+            margin-top: 20px;
+            display: none;
+            align-items: center;
+            background-color: #F5F5F5;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .playlist-cover {
+            width: 60px;
+            height: 60px;
+            background-color: #333;
+            border-radius: 4px;
+            margin-right: 15px;
+        }
+
+        .playlist-info {
+            flex-grow: 1;
+        }
+
+        .playlist-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .playlist-description {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .play-button {
+            background-color: #1DB954;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Custom Symptom Input */
+        .custom-symptom-container {
+            display: none;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .custom-symptom-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid var(--accent-lavender);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 10px;
+        }
+
+        .custom-symptom-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .custom-symptom-btn {
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: none;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .custom-symptom-btn.add {
+            background-color: var(--primary-purple);
+            color: white;
+        }
+
+        .custom-symptom-btn.cancel {
+            background-color: transparent;
+            border: 1px solid var(--text-light);
+            color: var(--text-light);
+        }
+
+        .custom-symptom-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 200px;
+                padding: 20px 15px;
+            }
+            
+            .main-content {
+                margin-left: 200px;
+                width: calc(100% - 200px);
+                padding: 25px 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                padding: 20px 10px;
+                align-items: center;
+            }
+            
+            .nav-item span, .logo span, .profile-name {
+                display: none;
+            }
+            
+            .nav-item {
+                justify-content: center;
+                padding: 12px 0;
+            }
+            
+            .nav-item i {
+                margin-right: 0;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+                padding: 20px;
+            }
+            
+            .cards-container {
+                flex-direction: column;
+            }
+            
+            .mood-options {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .mood-option {
+                width: calc(50% - 15px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .graph-labels {
+                display: none;
+            }
+            
+            .mood-option {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo">
+            <i class="fas fa-spa"></i>
+            <span>Bloom</span>
+        </div>
+        
+        <div class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-yin-yang"></i>
+            <span>Yoga</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-utensils"></i>
+            <span>Nutrition</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-smile"></i>
+            <span>Mood Tracker</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-book-open"></i>
+            <span>Recipes</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-lightbulb"></i>
+            <span>Tips</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </div>
+        
+        <div class="profile">
+            <div class="profile-avatar">M</div>
+            <div class="profile-name">Maya</div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="greeting">
+            <h1>Welcome, Maya!</h1>
+            <p>You're on Day 3 of your Menstrual Phase</p>
+        </div>
+        
+        <!-- Cycle Sync Graph -->
+        <div class="graph-container">
+            <div class="graph-header">
+                <div class="graph-title">Cycle Sync</div>
+                <div class="graph-encouragement">
+                    Let's get you to full-sync today! <i class="fas fa-seedling"></i>
+                </div>
+            </div>
+            
+            <div class="graph">
+                <div class="graph-line"></div>
+                <div class="graph-point" style="left: 10%;" data-day="Day 1" data-percent="71"></div>
+                <div class="graph-point" style="left: 30%;" data-day="Day 2" data-percent="58"></div>
+                <div class="graph-point active" style="left: 50%;" data-day="Day 3" data-percent="42"></div>
+                <div class="graph-point" style="left: 70%;" data-day="Day 4" data-percent="28"></div>
+                <div class="graph-point" style="left: 90%;" data-day="Day 5" data-percent="14"></div>
+                
+                <div class="graph-labels">
+                    <div class="graph-label">Menstrual</div>
+                    <div class="graph-label">Follicular</div>
+                    <div class="graph-label">Ovulation</div>
+                    <div class="graph-label">Luteal</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Symptoms Section -->
+        <div class="symptoms-container">
+            <div class="section-title">Are you feeling any symptoms today?</div>
+            <div class="symptom-chips">
+                <div class="symptom-chip">Bloating</div>
+                <div class="symptom-chip">Cramps</div>
+                <div class="symptom-chip">Fatigue</div>
+                <div class="symptom-chip">Headache</div>
+                <div class="symptom-chip">Tender Breasts</div>
+                <div class="symptom-chip add-symptom" id="addSymptomBtn">
+                    <i class="fas fa-plus"></i>
+                    <span>Custom</span>
+                </div>
+            </div>
+            
+            <div class="custom-symptom-container" id="customSymptomContainer">
+                <input type="text" class="custom-symptom-input" id="customSymptomInput" placeholder="Enter your symptom">
+                <div class="custom-symptom-btns">
+                    <button class="custom-symptom-btn add" id="addCustomSymptom">Add</button>
+                    <button class="custom-symptom-btn cancel" id="cancelCustomSymptom">Cancel</button>
+                </div>
+            </div>
+            
+            <button class="submit-btn" id="submitSymptoms">Submit Symptoms</button>
+            <div class="feedback-message" id="symptomsFeedback"></div>
+        </div>
+        
+        <!-- Cards Section -->
+        <div class="cards-container">
+            <div class="card">
+                <div class="card-title">Waiting for your next Yoga Session</div>
+                <div class="card-content">Gentle yoga can help relieve menstrual discomfort. Join our live session in 15 minutes!</div>
+                <button class="card-button">Join Now</button>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">Check out today's wellness tip</div>
+                <div class="card-content">"Stay hydrated with warm lemon water to help reduce bloating during your period."</div>
+                <button class="card-button teal">Explore Now</button>
+            </div>
+        </div>
+        
+        <!-- Mood Section -->
+        <div class="mood-container">
+            <div class="section-title">How do you feel today?</div>
+            
+            <div class="mood-options">
+                <div class="mood-option" data-mood="happy">
+                    <div class="mood-icon">😊</div>
+                    <div class="mood-name">Happy</div>
+                    <div class="stars">
+                        <div class="star" data-rating="1">★</div>
+                        <div class="star" data-rating="2">★</div>
+                        <div class="star" data-rating="3">★</div>
+                        <div class="star" data-rating="4">★</div>
+                        <div class="star" data-rating="5">★</div>
+                    </div>
+                </div>
+                
+                <div class="mood-option" data-mood="angry">
+                    <div class="mood-icon">😠</div>
+                    <div class="mood-name">Angry</div>
+                    <div class="stars">
+                        <div class="star" data-rating="1">★</div>
+                        <div class="star" data-rating="2">★</div>
+                        <div class="star" data-rating="3">★</div>
+                        <div class="star" data-rating="4">★</div>
+                        <div class="star" data-rating="5">★</div>
+                    </div>
+                </div>
+                
+                <div class="mood-option" data-mood="energetic">
+                    <div class="mood-icon">⚡</div>
+                    <div class="mood-name">Energetic</div>
+                    <div class="stars">
+                        <div class="star" data-rating="1">★</div>
+                        <div class="star" data-rating="2">★</div>
+                        <div class="star" data-rating="3">★</div>
+                        <div class="star" data-rating="4">★</div>
+                        <div class="star" data-rating="5">★</div>
+                    </div>
+                </div>
+                
+                <div class="mood-option" data-mood="sad">
+                    <div class="mood-icon">😢</div>
+                    <div class="mood-name">Sad</div>
+                    <div class="stars">
+                        <div class="star" data-rating="1">★</div>
+                        <div class="star" data-rating="2">★</div>
+                        <div class="star" data-rating="3">★</div>
+                        <div class="star" data-rating="4">★</div>
+                        <div class="star" data-rating="5">★</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mood-feedback" id="moodFeedback"></div>
+            <button class="mood-submit-btn" id="submitMood" disabled>Submit Mood</button>
+            <div class="mood-thank-you" id="moodThankYou">
+                Thank you for sharing your mood today! We've recorded your feelings and will use this to provide better recommendations.
+            </div>
+        </div>
+        
+        <!-- Spotify Section -->
+        <div class="spotify-container">
+            <div class="section-title">Want music to match your mood?</div>
+            <button class="spotify-button" id="connectSpotify">
+                <i class="fab fa-spotify"></i>
+                <span>Connect Spotify</span>
+            </button>
+            
+            <div class="playlist-display" id="playlistDisplay">
+                <div class="playlist-cover"></div>
+                <div class="playlist-info">
+                    <div class="playlist-name">Calm Flow</div>
+                    <div class="playlist-description">Gentle melodies for your menstrual days</div>
+                </div>
+                <button class="play-button">
+                    <i class="fas fa-play"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Symptom Chip Selection
+        const symptomChips = document.querySelectorAll('.symptom-chip:not(.add-symptom)');
+        const selectedSymptoms = new Set();
+        
+        symptomChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                chip.classList.toggle('selected');
+                
+                if (chip.classList.contains('selected')) {
+                    selectedSymptoms.add(chip.textContent.trim());
+                } else {
+                    selectedSymptoms.delete(chip.textContent.trim());
+                }
+            });
+        });
+        
+        // Custom Symptom Functionality
+        const addSymptomBtn = document.getElementById('addSymptomBtn');
+        const customSymptomContainer = document.getElementById('customSymptomContainer');
+        const customSymptomInput = document.getElementById('customSymptomInput');
+        const addCustomSymptom = document.getElementById('addCustomSymptom');
+        const cancelCustomSymptom = document.getElementById('cancelCustomSymptom');
+        const symptomChipsContainer = document.querySelector('.symptom-chips');
+        
+        addSymptomBtn.addEventListener('click', () => {
+            customSymptomContainer.style.display = 'block';
+            addSymptomBtn.style.display = 'none';
+        });
+        
+        cancelCustomSymptom.addEventListener('click', () => {
+            customSymptomContainer.style.display = 'none';
+            customSymptomInput.value = '';
+            addSymptomBtn.style.display = 'flex';
+        });
+        
+        addCustomSymptom.addEventListener('click', () => {
+            const symptomText = customSymptomInput.value.trim();
+            if (symptomText) {
+                // Create new chip
+                const newChip = document.createElement('div');
+                newChip.className = 'symptom-chip selected';
+                newChip.textContent = symptomText;
+                
+                // Add click handler
+                newChip.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                    
+                    if (this.classList.contains('selected')) {
+                        selectedSymptoms.add(this.textContent.trim());
+                    } else {
+                        selectedSymptoms.delete(this.textContent.trim());
+                    }
+                });
+                
+                // Insert before the add button
+                symptomChipsContainer.insertBefore(newChip, addSymptomBtn);
+                selectedSymptoms.add(symptomText);
+                
+                // Reset custom input
+                customSymptomContainer.style.display = 'none';
+                customSymptomInput.value = '';
+                addSymptomBtn.style.display = 'flex';
+            }
+        });
+        
+        // Submit Symptoms
+        const submitSymptomsBtn = document.getElementById('submitSymptoms');
+        const symptomsFeedback = document.getElementById('symptomsFeedback');
+        
+        submitSymptomsBtn.addEventListener('click', () => {
+            if (selectedSymptoms.size === 0) {
+                symptomsFeedback.textContent = 'Please select at least one symptom or click "Skip" if you\'re feeling fine.';
+                symptomsFeedback.className = 'feedback-message error';
+                symptomsFeedback.style.display = 'block';
+            } else {
+                // In a real app, you would send this data to your backend
+                console.log('Submitting symptoms:', Array.from(selectedSymptoms));
+                
+                symptomsFeedback.textContent = `Thank you! We've recorded your symptoms: ${Array.from(selectedSymptoms).join(', ')}. We'll use this to personalize your experience.`;
+                symptomsFeedback.className = 'feedback-message success';
+                symptomsFeedback.style.display = 'block';
+                
+                // Change button text
+                submitSymptomsBtn.textContent = 'Update Symptoms';
+                
+                // You could also disable the button for a few seconds to prevent spamming
+                submitSymptomsBtn.disabled = true;
+                setTimeout(() => {
+                    submitSymptomsBtn.disabled = false;
+                }, 2000);
+            }
+        });
+        
+        // Mood Rating System
+        const moodOptions = document.querySelectorAll('.mood-option');
+        const submitMoodBtn = document.getElementById('submitMood');
+        const moodFeedback = document.getElementById('moodFeedback');
+        const moodThankYou = document.getElementById('moodThankYou');
+        let currentMood = null;
+        let currentRating = 0;
+        
+        moodOptions.forEach(option => {
+            const stars = option.querySelectorAll('.star');
+            const mood = option.getAttribute('data-mood');
+            let selectedRating = 0;
+            
+            stars.forEach(star => {
+                star.addEventListener('click', (e) => {
+                    const rating = parseInt(e.target.getAttribute('data-rating'));
+                    selectedRating = rating;
+                    currentRating = rating;
+                    currentMood = mood;
+                    
+                    // Update stars
+                    stars.forEach((s, index) => {
+                        if (index < rating) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
+                        }
+                    });
+                    
+                    // Show feedback
+                    const moodNames = {
+                        happy: 'Happy',
+                        angry: 'Angry',
+                        energetic: 'Energetic',
+                        sad: 'Sad'
+                    };
+                    
+                    moodFeedback.textContent = `You feel ${rating}-star ${moodNames[mood]} today`;
+                    moodFeedback.style.display = 'block';
+                    submitMoodBtn.disabled = false;
+                    
+                    // Reset other mood options
+                    moodOptions.forEach(otherOption => {
+                        if (otherOption !== option) {
+                            const otherStars = otherOption.querySelectorAll('.star');
+                            otherStars.forEach(s => s.classList.remove('active'));
+                        }
+                    });
+                });
+            });
+        });
+        
+        // Submit Mood
+        submitMoodBtn.addEventListener('click', () => {
+            if (currentMood && currentRating > 0) {
+                // In a real app, you would send this data to your backend
+                console.log('Submitting mood:', {
+                    mood: currentMood,
+                    rating: currentRating,
+                    date: new Date().toISOString()
+                });
+                
+                // Show thank you message
+                moodThankYou.style.display = 'block';
+                moodFeedback.style.display = 'none';
+                submitMoodBtn.style.display = 'none';
+                
+                // Hide thank you message after 5 seconds
+                setTimeout(() => {
+                    moodThankYou.style.display = 'none';
+                    submitMoodBtn.style.display = 'block';
+                    submitMoodBtn.disabled = true;
+                    currentMood = null;
+                    currentRating = 0;
+                    
+                    // Reset stars
+                    document.querySelectorAll('.star').forEach(star => {
+                        star.classList.remove('active');
+                    });
+                }, 5000);
+            }
+        });
+        
+        // Spotify Connection
+        const connectSpotify = document.getElementById('connectSpotify');
+        const playlistDisplay = document.getElementById('playlistDisplay');
+        
+        connectSpotify.addEventListener('click', () => {
+            connectSpotify.innerHTML = '<i class="fas fa-check"></i><span>Connected</span>';
+            connectSpotify.style.backgroundColor = '#191414';
+            playlistDisplay.style.display = 'flex';
+            
+            // In a real app, you would authenticate with Spotify API here
+        });
+        
+        // Mobile Menu Toggle (for responsive design)
+        function toggleMobileMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.style.display = sidebar.style.display === 'none' ? 'flex' : 'none';
+        }
+        
+        // Check screen size and adjust sidebar accordingly
+        function checkScreenSize() {
+            const sidebar = document.querySelector('.sidebar');
+            if (window.innerWidth <= 480px) {
+                sidebar.style.display = 'none';
+            } else {
+                sidebar.style.display = 'flex';
+            }
+        }
+        
+        window.addEventListener('resize', checkScreenSize);
+        window.addEventListener('load', checkScreenSize);
+    </script>
+</body>
+</html>
