@@ -1,0 +1,657 @@
+/* New Color Variables */
+:root {
+  --bloom-lavender: #e2d4f0;
+  --bloom-blush: #f4e1e8;
+  --bloom-plum: #9c6899;
+  --bloom-rose: #d4a5c5;
+  --bloom-cream: #f8f4e9;
+  --bloom-charcoal: #3a3a3a;
+  --bloom-brown: #6d5d5d;
+  --bloom-white: #ffffff;
+  --bloom-active: #7e57a0;
+  --primary-color: var(--bloom-plum);
+  --primary-dark: #7e57a0;
+  --primary-light: var(--bloom-lavender);
+  --accent-color: var(--bloom-rose);
+  --text-dark: var(--bloom-charcoal);
+}
+
+/* Base Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bloom-cream);
+  color: var(--bloom-charcoal);
+}
+
+.app-container {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+/* Main Sidebar Styles */
+.main-sidebar {
+  background-color: var(--bloom-white);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  padding: 20px 0;
+}
+
+.sidebar-header {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--bloom-lavender);
+}
+
+.sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.sidebar-item {
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sidebar-item:hover {
+  background-color: var(--bloom-lavender);
+}
+
+.sidebar-item.active {
+  background-color: var(--bloom-plum);
+  color: white;
+}
+
+.sidebar-icon {
+  margin-right: 12px;
+  width: 20px;
+  text-align: center;
+}
+
+/* Top Navigation Bar */
+.top-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: var( --primary-color);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.top-nav-items {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-item:hover {
+  background-color: var(--primary-light);
+}
+
+.nav-item.active {
+  background-color: var(--primary-color);
+  color: var(--bloom-white);
+}
+
+.user-profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Content Sections */
+.main-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.content-sections {
+  padding: 20px 30px;
+  flex-grow: 1;
+}
+
+.content-section {
+  display: none;
+}
+
+.content-section.active {
+  display: block;
+}
+
+/* Water Tracker Section - Preserved Styles */
+.water-container {
+  /* Existing styles preserved */
+  background-color: var(--bloom-white);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.water-btn {
+  /* Existing styles preserved */
+  background-color: var(--primary-color);
+  color: var(--bloom-white);
+}
+
+/* Ayurvedic Remedies Section - Preserved Styles */
+.remedy-categories {
+  /* Existing styles preserved */
+  margin: 20px 0;
+}
+
+.category-btn {
+  /* Existing styles preserved */
+  background-color: var(--primary-light);
+}
+
+.category-btn.active {
+  background-color: var(--primary-color);
+  color: var(--bloom-white);
+}
+
+.remedy-grid {
+  /* Existing styles preserved */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Recipe Cards - Preserved Styles */
+.recipe-card {
+  /* Existing styles preserved */
+  background-color: var(--bloom-cream);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.view-recipe {
+  /* Existing styles preserved */
+  background-color: var(--primary-color);
+  color: var(--bloom-white);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .main-sidebar {
+    display: none; /* Will be replaced with mobile menu */
+  }
+  
+  .top-nav-items {
+    gap: 15px;
+  }
+  
+  .remedy-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Water Tracker Section */
+.water-container {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.water-bottle {
+  width: 150px;
+  height: 300px;
+  background-color: white;
+  border-radius: 0 0 40px 40px;
+  border: 4px solid var(--primary-color);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.water-fill {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #6ab3f8; /* Consider adding a variable if this is a theme color */
+  transition: height 0.5s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.water-amount {
+  color: var(--bloom-white);
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.water-markings {
+  position: absolute;
+  right: -30px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.water-markings span {
+  font-size: 0.8rem;
+  color: var(--text-dark);
+}
+
+.water-controls {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.water-btn {
+  padding: 12px 20px;
+  background-color: var(--primary-color);
+  color: var(--bloom-white);
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.water-btn:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.water-progress {
+  margin-top: 20px;
+}
+
+.water-progress span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-dark);
+}
+
+.progress-bar {
+  height: 10px;
+  background-color: var(--bloom-lavender);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-light), var(--primary-color));
+  transition: width 0.5s ease;
+}
+
+/* Ayurvedic Remedies Section */
+.search-box {
+  display: flex;
+  margin-bottom: 20px;
+  max-width: 500px;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 12px 15px;
+  border: 2px solid var(--bloom-lavender);
+  border-radius: 25px 0 0 25px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-box button {
+  padding: 0 20px;
+  background-color: var(--primary-color);
+  color: var(--bloom-white);
+  border: none;
+  border-radius: 0 25px 25px 0;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.remedy-categories {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  
+}
+
+.category-btn {
+  padding: 8px 16px;
+  background-color: var(--primary-light);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.82rem;
+}
+
+.category-btn.active {
+  background-color: var(--primary-color);
+  color: var(--bloom-white);
+}
+
+.remedy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  align-items: stretch; /* Ensure all cards stretch to same height */
+}
+
+.remedy-card {
+  background-color: var(--bloom-cream);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Make all cards equal height */
+}
+
+.remedy-image {
+  height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.remedy-image img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.remedy-info {
+  padding: 20px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.remedy-info h3 {
+  margin-bottom: 8px;
+  color: var(--primary-dark);
+  font-size: 1.05rem;
+}
+
+.remedy-benefit {
+  color: var(--accent-color);
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.remedy-desc {
+  color: var(--text-dark);
+  margin-bottom: 15px;
+  font-size: 0.92rem;
+}
+
+.save-remedy {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--bloom-lavender);
+  transition: color 0.3s ease;
+}
+
+.save-remedy:hover {
+  color: var(--accent-color);
+}
+
+/* Recipes Section */
+.recipe-filters {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.recipe-filters select {
+  padding: 10px 15px;
+  border: 2px solid var(--bloom-lavender);
+  border-radius: 8px;
+  background-color: var(--bloom-white);
+  font-size: 1rem;
+}
+
+.recipe-carousel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+/* Cross-browser: Center and shrink single recipe card */
+.recipe-carousel.single-card {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  justify-items: center;
+  align-items: start;
+  height: auto !important;
+  min-height: 0 !important;
+}
+.recipe-carousel.single-card .recipe-card {
+  max-width: 340px;
+  min-width: 240px;
+  width: 100%;
+  flex: none !important;
+  height: auto !important;
+  display: flex !important;
+  flex-direction: column;
+}
+
+.recipe-carousel.single-card .recipe-info {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.recipe-carousel.single-card .view-recipe {
+  margin-top: auto;
+}
+
+/* Remove grid min-height for single card */
+.recipe-carousel.single-card {
+  min-height: unset !important;
+}
+
+.recipe-card, .remedy-card {
+  background-color: var(--bloom-cream);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Make all cards equal height */
+}
+
+.recipe-image {
+  height: 180px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.recipe-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: var(--primary-color);
+  color: var(--bloom-white);
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.recipe-info {
+  padding: 20px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.recipe-info h3 {
+  margin-bottom: 10px;
+  color: var(--primary-dark);
+  font-size: 1.1rem;
+}
+
+.recipe-info p {
+  color: var(--text-dark);
+  font-size: 0.92rem;
+  margin-bottom: 15px;
+}
+
+.recipe-meta {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  color: var(--text-dark);
+  font-size: 0.9rem;
+}
+
+.view-recipe {
+  display: block;
+  width: 100%;
+  padding: 9px;
+  background-color: var(--primary-color);
+  color: var(--bloom-white);
+  border: none;
+  border-radius: 8px;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 0.95rem;
+  margin-top: auto; /* Push button to bottom of card */
+}
+
+.view-recipe:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Wellness Tips Section */
+.tips-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.tip-card {
+  background-color: var(--bloom-cream);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.tip-card h3 {
+  color: var(--primary-dark);
+  margin-bottom: 10px;
+}
+
+.tip-card p {
+  color: var(--text-dark);
+  margin-bottom: 15px;
+}
+
+.tip-action {
+  background-color: var(--primary-color);
+  color: var(--bloom-white);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tip-action:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .water-container {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .remedy-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+  }
+  
+  .side-nav {
+    width: 100%;
+    flex-direction: row;
+    padding: 0;
+    justify-content: space-around;
+  }
+  
+  .nav-item {
+    flex-direction: column;
+    padding: 15px 10px;
+    border-left: none;
+  }
+  
+  .nav-item.active {
+    border-left: none;
+    border-bottom: 4px solid white;
+  }
+  
+  .nav-icon {
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+  
+  .content-sections {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .header {
+    padding: 15px;
+  }
+  
+  .remedy-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .recipe-filters {
+    flex-direction: column;
+  }
+}
